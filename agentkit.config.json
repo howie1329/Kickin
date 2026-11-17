@@ -1,0 +1,14 @@
+{
+  "installMode": "skill",
+  "agentkitVersion": "0.9.0",
+  "templateSet": "standard",
+  "aiTools": [
+    "codex",
+    "cursor"
+  ],
+  "designSystem": "apple",
+  "personalization": {
+    "projectName": "Kickin",
+    "projectDescription": "Bill Splitter"
+  }
+}
