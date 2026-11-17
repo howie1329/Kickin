@@ -79,8 +79,6 @@ src/db/         Drizzle schema and DB client
 db/             SQL init / seed helpers
 ```
 
-Starter **demo** routes and `demo-*` files under `src/` are leftover from the TanStack scaffold and can be removed as Kickin features land.
-
 ## Deploy
 
 Repo includes `vercel.json` for TanStack Start on Vercel.

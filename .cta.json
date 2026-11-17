@@ -24,8 +24,6 @@
     "drizzle",
     "shadcn",
     "neon",
-    "tanstack-query",
-    "ai",
-    "store"
+    "tanstack-query"
   ]
 }
