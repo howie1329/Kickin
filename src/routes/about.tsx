@@ -6,13 +6,15 @@ export const Route = createFileRoute('/about')({
 
 function About() {
   return (
-    <main className="page-wrap px-4 py-12">
-      <section className="island-shell rounded-2xl p-6 sm:p-8">
-        <p className="island-kicker mb-2">How it works</p>
-        <h1 className="display-title mb-4 text-3xl font-bold text-[var(--sea-ink)] sm:text-4xl">
+    <main className="mx-auto w-full max-w-3xl px-4 py-12">
+      <section className="rounded-lg border border-border bg-card p-6 text-card-foreground shadow-sm sm:p-8">
+        <p className="mb-2 text-sm font-medium tracking-wide text-muted-foreground uppercase">
+          How it works
+        </p>
+        <h1 className="mb-4 font-serif text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
           One receipt. Your table. Done.
         </h1>
-        <ol className="m-0 max-w-2xl list-decimal space-y-3 pl-5 text-base leading-7 text-[var(--sea-ink-soft)]">
+        <ol className="m-0 max-w-2xl list-decimal space-y-3 pl-5 text-base leading-7 text-muted-foreground">
           <li>Host signs in and opens a bill with total, tip, and seats.</li>
           <li>Share the link and 4-digit bill code with the table.</li>
           <li>Guests claim a seat, see their equal share, and mark paid.</li>
@@ -21,7 +23,7 @@ function About() {
         <p className="mt-6 mb-0">
           <Link
             to="/"
-            className="font-semibold text-[var(--lagoon-deep)] no-underline hover:underline"
+            className="font-semibold text-foreground underline-offset-4 hover:underline"
           >
             Back home
           </Link>
