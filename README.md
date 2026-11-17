@@ -1,270 +1,92 @@
-Welcome to your new TanStack Start app!
+# Kickin
 
-# Getting Started
+Mobile-friendly bill splitter. A host opens a receipt, invites the table with a link, guests claim a seat, everyone sees an equal share, and Pay marks shares settled — no real money moves.
 
-To run this application:
+Full product decisions: [`docs/mvp-brief.md`](docs/mvp-brief.md).
+
+## MVP
+
+- **Host** creates an account (initials + 6-digit PIN), starts a bill (total + tip), pre-adds seats, shares a link + 4-digit bill code.
+- **Guests** need no account: open the link → bill code → pick a seat → see what they owe → mark paid.
+- Equal split: `(total + tip) / n`. Host can toggle anyone paid; guests can mark themselves paid.
+- Live balance via short polling in v1.
+
+Not in v1: line items, custom amounts, groups/history, real payments, OCR, WebSockets.
+
+## Stack
+
+- [TanStack Start](https://tanstack.com/start) (React) + Vite + file router
+- Drizzle ORM + Neon Postgres
+- Tailwind CSS 4 + shadcn
+- TanStack Query
+
+## Setup
 
 ```bash
 npm install
 npm run dev
 ```
 
-# Building For Production
+App runs at [http://localhost:3000](http://localhost:3000).
 
-To build this application for production:
+### Database
 
-```bash
-npm run build
-```
-
-## Styling
-
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
-
-### Removing Tailwind CSS
-
-If you prefer not to use Tailwind CSS:
-
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/styles.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Remove `@tailwindcss/vite` and `tailwindcss` from `package.json`
-
-## Linting & Formatting
-
-
-This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
+Copy env from the example and fill in Neon URLs (or let the Neon Vite plugin create a claimable DB on first `dev`):
 
 ```bash
-npm run lint
-npm run format
-npm run check
+cp .env.example .env.local
 ```
 
+```env
+DATABASE_URL=
+DATABASE_URL_POOLER=
+```
 
-## Deploy to Vercel
+> Claimable Neon Launchpad databases expire in 72 hours. Claim/persist one for ongoing work.
 
-1. Push this repo to GitHub, GitLab, or Bitbucket
-2. In Vercel, choose **Add New > Project** and import the repo
-3. Keep the detected TanStack Start framework settings
-4. Add production values from `.env.example` under **Settings > Environment Variables**
-5. Deploy
+Useful DB scripts:
 
-Vercel runs the build script and deploys Nitro's output as Vercel Functions and
-static assets. The included `vercel.json` makes framework detection explicit.
+```bash
+npm run db:generate   # drizzle-kit generate
+npm run db:migrate    # drizzle-kit migrate
+npm run db:push       # drizzle-kit push
+npm run db:studio     # drizzle-kit studio
+```
 
-Variables prefixed with `VITE_` are included in the browser bundle. Keep secrets
-unprefixed so they remain server-only.
+### Scripts
 
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Dev server (port 3000) |
+| `npm run build` | Production build |
+| `npm run preview` | Preview production build |
+| `npm run lint` | ESLint |
+| `npm run format` | Prettier + ESLint fix |
+| `npm run check` | Prettier check |
 
-## Shadcn
-
-Add components using the latest version of [Shadcn](https://ui.shadcn.com/).
+### UI components
 
 ```bash
 pnpm dlx shadcn@latest add button
 ```
 
+## Project layout
 
-## Setting up Neon
-
-When running the `dev` command, `vite-plugin-neon-new` will identify there is not a database setup. It will then create and seed a claimable database.
-
-It is the same process as [Neon Launchpad](https://neon.new).
-
-> [!IMPORTANT]  
-> Claimable databases expire in 72 hours.
-
-
-# TanStack Chat Application
-
-Am example chat application built with TanStack Start, TanStack Store, and Claude AI.
-
-## .env Updates
-
-```env
-ANTHROPIC_API_KEY=your_anthropic_api_key
+```text
+docs/           Product briefs and decisions
+src/routes/     File-based routes (TanStack Router)
+src/db/         Drizzle schema and DB client
+db/             SQL init / seed helpers
 ```
 
-## ✨ Features
+Starter **demo** routes and `demo-*` files under `src/` are leftover from the TanStack scaffold and can be removed as Kickin features land.
 
-### AI Capabilities
-- 🤖 Powered by Claude 3.5 Sonnet 
-- 📝 Rich markdown formatting with syntax highlighting
-- 🎯 Customizable system prompts for tailored AI behavior
-- 🔄 Real-time message updates and streaming responses (coming soon)
+## Deploy
 
-### User Experience
-- 🎨 Modern UI with Tailwind CSS and Lucide icons
-- 🔍 Conversation management and history
-- 🔐 Secure API key management
-- 📋 Markdown rendering with code highlighting
+Repo includes `vercel.json` for TanStack Start on Vercel.
 
-### Technical Features
-- 📦 Centralized state management with TanStack Store
-- 🔌 Extensible architecture for multiple AI providers
-- 🛠️ TypeScript for type safety
+1. Import the repo in Vercel.
+2. Set `DATABASE_URL` / `DATABASE_URL_POOLER` (and any other secrets) from `.env.example`.
+3. Deploy.
 
-## Architecture
-
-### Tech Stack
-- **Frontend Framework**: TanStack Start
-- **Routing**: TanStack Router
-- **State Management**: TanStack Store
-- **Styling**: Tailwind CSS
-- **AI Integration**: Anthropic's Claude API
-
-
-## Routing
-
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'My App' },
-    ],
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  ),
-})
-```
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-## Server Functions
-
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
-
-```tsx
-import { createServerFn } from '@tanstack/react-start'
-
-const getServerTime = createServerFn({
-  method: 'GET',
-}).handler(async () => {
-  return new Date().toISOString()
-})
-
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState('')
-  
-  useEffect(() => {
-    getServerTime().then(setTime)
-  }, [])
-  
-  return <div>Server time: {time}</div>
-}
-```
-
-## API Routes
-
-You can create API routes by using the `server` property in your route definitions:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { json } from '@tanstack/react-start'
-
-export const Route = createFileRoute('/api/hello')({
-  server: {
-    handlers: {
-      GET: () => json({ message: 'Hello, World!' }),
-    },
-  },
-})
-```
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-
-export const Route = createFileRoute('/people')({
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people')
-    return response.json()
-  },
-  component: PeopleComponent,
-})
-
-function PeopleComponent() {
-  const data = Route.useLoaderData()
-  return (
-    <ul>
-      {data.results.map((person) => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  )
-}
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+Keep secrets unprefixed. Only `VITE_` vars are exposed to the browser.
